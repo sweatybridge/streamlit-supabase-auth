@@ -12,6 +12,7 @@ def main():
         return
     st.experimental_set_query_params(page=["success"])
     with st.sidebar:
+        st.write(f"Welcome {session['user']['email']}")
         logout()
 
 

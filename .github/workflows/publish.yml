@@ -15,9 +15,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - working-directory: ./streamlit_text_label/frontend
+      - working-directory: ./streamlit_supabase_auth/frontend
         run: npm install
-      - working-directory: ./streamlit_text_label/frontend
+      - working-directory: ./streamlit_supabase_auth/frontend
         run: npm run build
       # Package distribution
       - uses: actions/setup-python@v3

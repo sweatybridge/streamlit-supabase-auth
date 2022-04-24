@@ -20,8 +20,11 @@ session = login(
 )
 if not session:
     return
+
+# Update query param to reset url fragments
 st.experimental_set_query_params(page=["success"])
 with st.sidebar:
+    st.write(f"Welcome {session['user']['email']}")
     logout()
 ```
 
