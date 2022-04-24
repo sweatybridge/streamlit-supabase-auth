@@ -1,0 +1,13 @@
+.sbui-auth {
+  width: 100%;
+}
+
+.sbui-auth-label {
+  /* @apply block text-sm text-gray-700 dark:text-gray-200 font-medium; */
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgba(31, 31, 31, var(--tw-text-opacity));
+}

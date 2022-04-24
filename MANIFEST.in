@@ -1,0 +1,1 @@
+recursive-include streamlit_supabase_auth/frontend/build *

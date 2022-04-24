@@ -1,0 +1,32 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - published
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # Build frontend
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - working-directory: ./streamlit_text_label/frontend
+        run: npm install
+      - working-directory: ./streamlit_text_label/frontend
+        run: npm run build
+      # Package distribution
+      - uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - run: pip install build
+      - run: python -m build
+      # Publish package
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}

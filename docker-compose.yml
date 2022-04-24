@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: example/Dockerfile
+    ports:
+      - 8501:8501
+    environment:
+      RELEASE: DEV
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_KEY: ${SUPABASE_KEY}
+    volumes:
+      - ./example/app.py:/app/app.py
+      - ./example/.streamlit:/app/.streamlit
+    command: streamlit run app.py
+
+  frontend:
+    build: streamlit_supabase_auth/frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./streamlit_supabase_auth/frontend/public:/frontend/public
+      - ./streamlit_supabase_auth/frontend/src:/frontend/src
+      - ./streamlit_supabase_auth/frontend/tsconfig.json:/frontend/tsconfig.json
