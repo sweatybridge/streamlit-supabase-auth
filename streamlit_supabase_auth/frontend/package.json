@@ -1,6 +1,6 @@
 {
-  "name": "streamlit_polygon_label",
-  "version": "0.1.0",
+  "name": "streamlit_supabase_auth",
+  "version": "1.0.0",
   "private": true,
   "homepage": ".",
   "dependencies": {
