@@ -43,7 +43,7 @@ else:
 # `declare_component` and call it done. The wrapper allows us to customize
 # our component's API: we can pre-process its input args, post-process its
 # output value, and add a docstring for users.
-def login(
+def login_form(
     url: Optional[str] = None,
     apiKey: Optional[str] = None,
     providers: Optional[List[str]] = None,
@@ -72,7 +72,7 @@ def login(
     return session
 
 
-def logout(url: Optional[str] = None, apiKey: Optional[str] = None) -> None:
+def logout_button(url: Optional[str] = None, apiKey: Optional[str] = None) -> None:
     """Creates a new instance of `logout` component using supabase-js.
 
     Args:

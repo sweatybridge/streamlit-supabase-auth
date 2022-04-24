@@ -1,6 +1,5 @@
-# streamlit-text-label
+# streamlit-supabase-auth
 
-Custom streamlit component for JWT authentication with Supabase.
 ![Demo](https://user-images.githubusercontent.com/1639722/164980408-22bbd548-348d-449b-8865-b024f9fe7a68.png)
 
 ## Usage
@@ -11,9 +10,9 @@ Prerequisite:
 
 ```python
 import streamlit as st
-from streamlit_supabase_auth import login, logout
+from streamlit_supabase_auth import login_form, logout_button
 
-session = login(
+session = login_form(
     url="https://xxxx.supabase.co",
     apiKey="<SUPABASE_KEY>",
     providers=["apple", "facebook", "github", "google"],
@@ -25,7 +24,7 @@ if not session:
 st.experimental_set_query_params(page=["success"])
 with st.sidebar:
     st.write(f"Welcome {session['user']['email']}")
-    logout()
+    logout_button()
 ```
 
 More details in [example](example/app.py) directory.
