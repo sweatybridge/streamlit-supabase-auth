@@ -107,7 +107,13 @@ const Container = (props: {
 
   const { user } = Auth.useUser();
   if (type === "login" && !user) {
-    return <Auth providers={providers} supabaseClient={supabase} />;
+    return (
+      <Auth
+        providers={providers}
+        supabaseClient={supabase}
+        onError={() => Streamlit.setFrameHeight()}
+      />
+    );
   }
 
   if (type === "logout" && user) {
@@ -131,7 +137,7 @@ const App = (props: ComponentProps) => {
 
   // Subscribe to auth events for each new client
   useEffect(() => {
-    console.info("Adding auth change listener");
+    // console.info("Adding auth change listener");
     const { data } = supabase.auth.onAuthStateChange(handleAuthEvent);
     if (data) {
       return () => data.unsubscribe();

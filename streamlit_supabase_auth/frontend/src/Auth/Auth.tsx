@@ -54,12 +54,14 @@ export interface Props {
   redirectTo?: RedirectTo;
   onlyThirdPartyProviders?: boolean;
   magicLink?: boolean;
+  onError?: () => void;
 }
 
 function Auth({
   supabaseClient,
   className,
   style,
+  onError,
   socialLayout = "vertical",
   socialColors = false,
   socialButtonSize = "medium",
@@ -120,6 +122,7 @@ function Auth({
             setDefaultPassword={setDefaultPassword}
             redirectTo={redirectTo}
             magicLink={magicLink}
+            onError={onError}
           />
         </Container>
       );
@@ -288,6 +291,7 @@ function EmailAuth({
   supabaseClient,
   redirectTo,
   magicLink,
+  onError,
 }: {
   authView: ViewType;
   defaultEmail: string;
@@ -299,6 +303,7 @@ function EmailAuth({
   supabaseClient: SupabaseClient;
   redirectTo?: RedirectTo;
   magicLink?: boolean;
+  onError?: () => void;
 }) {
   const isMounted = useRef<boolean>(true);
   const [email, setEmail] = useState(defaultEmail);
@@ -308,6 +313,12 @@ function EmailAuth({
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (error && onError) {
+      onError();
+    }
+  }, [onError, error]);
 
   useEffect(() => {
     setEmail(defaultEmail);
