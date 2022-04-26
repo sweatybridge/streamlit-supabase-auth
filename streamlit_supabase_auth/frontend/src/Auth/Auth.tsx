@@ -14,8 +14,7 @@ import {
 } from "@supabase/ui";
 import { Auth as SupabaseAuth } from "@supabase/ui";
 import * as SocialIcons from "./Icons";
-// @ts-ignore
-import AuthStyles from "./Auth.css";
+import AuthStyles from "./Auth.module.css";
 
 const { UserContextProvider, useUser } = SupabaseAuth;
 
