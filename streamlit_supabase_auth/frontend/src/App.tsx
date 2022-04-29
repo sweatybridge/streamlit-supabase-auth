@@ -58,8 +58,9 @@ const getSessionFromUrl = async (supabase: SupabaseClient) => {
       user: user!,
     };
     supabase.auth["_saveSession"](session);
-    const recoveryMode = params.get("type");
+    // SIGNED_IN event has been fired by _persistSession before
     supabase.auth["_notifyAllSubscribers"]("SIGNED_IN");
+    const recoveryMode = params.get("type");
     if (recoveryMode === "recovery") {
       supabase.auth["_notifyAllSubscribers"]("PASSWORD_RECOVERY");
     }
@@ -70,26 +71,44 @@ const getSessionFromUrl = async (supabase: SupabaseClient) => {
   }
 };
 
+const updateStreamlit = (session: Session | null) => {
+  Streamlit.setComponentValue(session);
+  Streamlit.setComponentReady();
+};
+
 const createClient = (supabaseUrl: string, supabaseKey: string) => {
   // console.info("Creating Supabase client");
   const client = new SupabaseClient(supabaseUrl, supabaseKey, {
     detectSessionInUrl: false,
   });
-  Streamlit.setComponentValue(client.auth.session());
-  Streamlit.setComponentReady();
+  if (!isRecovery()) {
+    updateStreamlit(client.auth.session());
+  }
   // Parsing valid session from url will trigger a SIGNED_IN event
   getSessionFromUrl(client);
   return client;
 };
 
+const isRecovery = () => {
+  const hash = getLocationHash().substring(1);
+  const params = new URLSearchParams(hash);
+  const recoveryMode = params.get("type");
+  return recoveryMode?.toLowerCase() === "recovery";
+};
+
 const handleAuthEvent = (event: AuthChangeEvent, session: Session | null) => {
+  // console.info(event, session);
   switch (event) {
+    case "USER_UPDATED":
+      // Redirect to login page
+      updateStreamlit(session);
+      break;
     case "SIGNED_IN":
     case "SIGNED_OUT":
       // Duplicate logout events happens under multitab
-      // console.info(event, session);
-      Streamlit.setComponentValue(session);
-      Streamlit.setComponentReady();
+      if (!isRecovery()) {
+        updateStreamlit(session);
+      }
       break;
     default:
   }
@@ -106,6 +125,10 @@ const Container = (props: {
   useEffect(() => Streamlit.setFrameHeight());
 
   const { user } = Auth.useUser();
+  if (isRecovery()) {
+    return <Auth.UpdatePassword supabaseClient={supabase} />;
+  }
+
   if (type === "login" && !user) {
     return (
       <Auth
