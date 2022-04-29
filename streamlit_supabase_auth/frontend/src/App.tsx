@@ -15,6 +15,7 @@ import {
 
 const getLocationHash = () => {
   try {
+    // Parse url fragment from parent window
     return window.parent.location.hash;
   } catch (e) {
     // Dev environment is hosted at different domain / port
@@ -26,7 +27,6 @@ const getLocationHash = () => {
 
 const getSessionFromUrl = async (supabase: SupabaseClient) => {
   try {
-    // Parse url fragment from parent window
     const hash = getLocationHash().substring(1);
     const params = new URLSearchParams(hash);
     const error_description = params.get("error_description");
