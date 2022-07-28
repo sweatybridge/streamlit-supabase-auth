@@ -52,7 +52,7 @@ RELEASE=DEV streamlit run example/app.py
 ## Publish
 
 ```bash
-cd component/frontend
+cd streamlit_supabase_auth/frontend
 npm run build
 cd ../..
 
